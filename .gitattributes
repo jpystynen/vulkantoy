@@ -1,0 +1,30 @@
+* text=auto
+
+# text files
+*.h		    text
+*.cpp		text
+*.txt		text
+*.md		text
+*.lua		text
+*.cmake		text
+*.vert		text
+*.frag		text
+
+# crlf
+*.bat		eol=crlf
+*.vcxproj	eol=crlf
+*.sln		eol=crlf
+
+# lf
+*.sh		eol=lf
+*.bash		eol=lf
+
+# binary
+*.bin		binary
+*.jpg   	binary
+*.png   	binary
+*.tga		binary
+*.spv		binary
+
+.gitignore	text
+
