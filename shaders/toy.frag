@@ -37,7 +37,11 @@ layout(set = 1, binding = 3) uniform sampler2D iChannel3;
 
 #define gl_FragColor    out_fragColor
 
-#define DEF_USE_IMAGE_SHADER    1
+#define DEF_USE_IMAGE_SHADER                1
+// shadertoys usully correct to gamme themself
+// we have a sRGB target and need to compensate and write linear color
+// if you do not want to compensate uncomment this define
+#define DEF_USE_SRGB_TO_LINEAR_CONVERSION   1
 
 ///////////////////////////////////////////////////////////////////////////////
 // SHADERTOY SHADER HERE
@@ -63,15 +67,37 @@ void mainImage(out vec4 fragColor, in vec2 fragCoord)
     {
         fragColor = texture(iChannel3, uv.xy * vec2(2.0));
     }
+    // usual shadertoy gamma correction
+    fragColor.rgb = pow(fragColor.rgb, vec3(0.4545));
 }
 
 // SHADERTOY SHADER ENDS HERE
 ///////////////////////////////////////////////////////////////////////////////
 
+float sRgbToLinear(const float sRgbColor)
+{
+        if (sRgbColor <= 0.04045)
+      return sRgbColor / 12.92;
+  else
+      return pow((sRgbColor + 0.055) / 1.055, 2.4);
+}
+
+vec3 sRgbToLinearVec(const vec3 sRgbColor)
+{
+    return vec3(
+        sRgbToLinear(sRgbColor.r),
+        sRgbToLinear(sRgbColor.g),
+        sRgbToLinear(sRgbColor.b)
+    );
+}
+
 void main(void)
 {
 #if (DEF_USE_IMAGE_SHADER == 1)
     mainImage(out_fragColor, vec2(gl_FragCoord.x, iResolution.y - gl_FragCoord.y));
+#endif
+#if (DEF_USE_SRGB_TO_LINEAR_CONVERSION == 1)
+    out_fragColor.rgb = sRgbToLinearVec(out_fragColor.rgb);
 #endif
 }
 
