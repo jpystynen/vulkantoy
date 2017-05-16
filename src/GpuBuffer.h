@@ -104,14 +104,17 @@ public:
 
     ~GpuBufferUniform()
     {
-        if (buffer)
+        if (mp_device->logicalDevice)
         {
-            vkUnmapMemory(mp_device->logicalDevice, m_deviceMemory);
-            vkDestroyBuffer(mp_device->logicalDevice, buffer, nullptr);
-        }
-        if (m_deviceMemory)
-        {
-            vkFreeMemory(mp_device->logicalDevice, m_deviceMemory, nullptr);
+            if (m_deviceMemory)
+            {
+                vkUnmapMemory(mp_device->logicalDevice, m_deviceMemory);
+                vkFreeMemory(mp_device->logicalDevice, m_deviceMemory, nullptr);
+            }
+            if (buffer)
+            {
+                vkDestroyBuffer(mp_device->logicalDevice, buffer, nullptr);
+            }
         }
     }
 

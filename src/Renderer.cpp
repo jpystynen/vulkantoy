@@ -132,11 +132,6 @@ void Renderer::render(const RendererInput& rendererInput)
         { m_descriptorSetUniform->descriptorSet,
         m_descriptorSetImage->descriptorSet };
 
-        VkBuffer buffer = m_gpuBufferUniform->buffer;
-        const VkDeviceSize bufByteSize = m_gpuBufferUniform->byteSize;
-        const VkDeviceSize bufByteOffset = m_gpuBufferUniform->getByteOffset();
-        VkPipelineLayout pipelineLayout = m_pipelineLayout;
-
         ShaderInputUniform shaderInputUniform;
         for (uint32_t idx = 0; idx < 4; ++idx)
         {
@@ -163,7 +158,12 @@ void Renderer::render(const RendererInput& rendererInput)
         shaderInputUniform.iSampleRate = 44100.0f; // don't know about this
         shaderInputUniform.iGlobalTime = rendererInput.globalTime;
 
+        const VkDeviceSize bufByteSize = m_gpuBufferUniform->byteSize;
         m_gpuBufferUniform->copyData((uint32_t)bufByteSize, (uint8_t*)&shaderInputUniform);
+
+        VkBuffer buffer = m_gpuBufferUniform->buffer;
+        const VkDeviceSize bufByteOffset = m_gpuBufferUniform->getByteOffset();
+        VkPipelineLayout pipelineLayout = m_pipelineLayout;
         
         const VkBufferMemoryBarrier bufferMemoryBarrier =
         {
