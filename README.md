@@ -17,6 +17,7 @@ Test shaders in the first screenshot:
 * [Tribute - Journey!](https://www.shadertoy.com/view/ldlcRf) 
 
 The second screenshot shows the default appearance with default textures.
+* [McGuire Graphics Data][image_williams]: Default images.
 
 Use Without Building
 --------------------
