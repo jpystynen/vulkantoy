@@ -160,7 +160,7 @@ public:
 
 private:
 
-    const uint32_t c_bufferingCount = 6;
+    const uint32_t c_bufferingCount = 3;
 
     void create();
     void destroy();
